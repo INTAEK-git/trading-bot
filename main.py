@@ -5,6 +5,9 @@ import pandas as pd
 import requests
 from pykrx import stock
 from dotenv import load_dotenv
+from datetime import datetime
+
+print(f"[RUN START] {datetime.now()}")
 
 # =============================
 # 텔레그램 설정
@@ -173,6 +176,8 @@ def main():
 
     state["positions"] = positions
     save_state(state)
+
+print(f"[RUN END] {datetime.now()}")
 
 if __name__ == "__main__":
     main()
