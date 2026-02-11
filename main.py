@@ -4,16 +4,19 @@ import os
 import pandas as pd
 import requests
 from pykrx import stock
+from dotenv import load_dotenv
 
 # =============================
 # 텔레그램 설정
 # =============================
-TELEGRAM_BOT_TOKEN = "7960613999:AAF3r252H_NDYGAmvr3AvO54FoW3l_FCiLY"
-TELEGRAM_CHAT_ID = "8326407719"
+
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+load_dotenv(dotenv_path=".env")
 
 def send_telegram(message: str):
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    payload = {"chat_id": CHAT_ID, "text": message}
     requests.post(url, data=payload, timeout=10)
 
 # =============================
