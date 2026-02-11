@@ -180,4 +180,5 @@ def main():
 print(f"[RUN END] {datetime.now()}")
 
 if __name__ == "__main__":
+    send_telegram("BOT STARTED HEARTBET")
     main()
