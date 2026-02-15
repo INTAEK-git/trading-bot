@@ -6,16 +6,30 @@ import requests
 from pykrx import stock
 from dotenv import load_dotenv
 from datetime import datetime
+from pathlib import Path
 
 print(f"[RUN START] {datetime.now()}")
+
 
 # =============================
 # 텔레그램 설정
 # =============================
 
+BASE_DIR = Path(__file__).resolve().parent
+config_path = BASE_DIR / "config.json"
+
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
-load_dotenv(dotenv_path=".env")
+
+if (not TELEGRAM_TOKEN or not CHAT_ID) and config_path.exists():
+    cfg = json.loads(config_path.read_text(encoding="utf-8"))
+    TELEGRAM_TOKEN = TELEGRAM_TOKEN or cfg.get("TELEGRAM_TOKEN")
+    CHAT_ID = CHAT_ID or cfg.get("CHAT_ID")
+
+print("TOKEN exists?", bool(TELEGRAM_TOKEN))
+print("CHAT_ID =", CHAT_ID)
+print("TOKEN head =", (TELEGRAM_TOKEN[:10] + "...") if TELEGRAM_TOKEN else None)
+
 
 def send_telegram(message: str):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
@@ -177,8 +191,9 @@ def main():
     state["positions"] = positions
     save_state(state)
 
-print(f"[RUN END] {datetime.now()}")
+
 
 if __name__ == "__main__":
-    send_telegram("BOT STARTED HEARTBET")
+    send_telegram("BOT STARTED HEARTBET!!")
     main()
+    print(f"[RUN END] {datetime.now()}")
